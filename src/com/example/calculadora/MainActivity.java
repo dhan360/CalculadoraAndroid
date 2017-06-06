@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 
 public class MainActivity extends Activity  {
@@ -23,6 +25,9 @@ public class MainActivity extends Activity  {
         
         TextView resultado = (TextView)findViewById(R.id.etRes);
         resultado.setText("");
+        TextView linea = (TextView)findViewById(R.id.etOp);
+        linea.setText("");
+        this.operacion="";
      
         Button nueve = (Button)findViewById(R.id.btnNueve);
         Button ocho = (Button)findViewById(R.id.btnOcho);
@@ -39,6 +44,7 @@ public class MainActivity extends Activity  {
         Button multiplicar = (Button)findViewById(R.id.btnMulti);
         Button dividir = (Button)findViewById(R.id.btnDivision);
         Button igual = (Button)findViewById(R.id.btnIgual);
+        Button borrar = (Button)findViewById(R.id.btnBorrar);
         
         nueve.setOnClickListener(new View.OnClickListener() {
 			
@@ -133,10 +139,74 @@ public class MainActivity extends Activity  {
 			
 			@Override
 			public void onClick(View arg0) {
-				OperacionInicial("+");
+				if(operacion == ""){
+					operacionInicial("+");
+				}
+				else{
+					operacionSiguiente("+");
+				}
 				
 			}
 		});
+		
+		resta.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if(operacion == ""){
+					operacionInicial("-");
+				}
+				else{
+					operacionSiguiente("-");
+				}
+				
+			}
+		});
+		
+		multiplicar.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if(operacion == ""){
+					operacionInicial("x");
+				}
+				else{
+					operacionSiguiente("x");
+				}
+				
+			}
+		});
+		
+		dividir.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if(operacion == ""){
+					operacionInicial("/");
+				}
+				else{
+					operacionSiguiente("/");
+				}
+				
+			}
+		});
+		
+		igual.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				igualFinal();
+			}
+		});
+		
+		borrar.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				borrarTodo();
+			}
+		});
+		
         
         
     }
@@ -147,13 +217,88 @@ public class MainActivity extends Activity  {
     	nuevaOperacion.setText(oper.getText().toString() + Integer.toString(numero));
     }
     
-    public void OperacionInicial(String operacion){
-    	this.operacion = operacion;
+    public void operacionInicial(String operacion){
     	EditText oper = (EditText)findViewById(R.id.etOp);
-    	TextView resultado = (TextView)findViewById(R.id.etRes);
-    	resultado.setText(oper.getText().toString());
+    	if (oper.getText().toString().equals("")){
+    		Toast.makeText(this, "Debes ingresar un numero para realizar la operación", Toast.LENGTH_LONG).show();
+    	}
+    	else{
+	    	this.operacion = operacion;
+	    	TextView resultado = (TextView)findViewById(R.id.etRes);
+	    	resultado.setText(oper.getText().toString());
+	    	TextView nuevoOper = (TextView)findViewById(R.id.etOp);
+	    	nuevoOper.setText("");
+    	}
+    	
+    }
+    
+    public void operacionSiguiente(String op){
+    	
+    	EditText oper = (EditText)findViewById(R.id.etOp);
+    	if (oper.getText().toString().equals("")){
+    		Toast.makeText(this, "Debes ingresar un numero para realizar la operación", Toast.LENGTH_LONG).show();
+    	}
+    	else{
+	    	EditText oper2 = (EditText)findViewById(R.id.etRes);
+	    	int res = 0;
+	    	if (this.operacion == "+"){
+	    		res = Integer.parseInt(oper2.getText().toString()) + Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "-"){
+	    		res = Integer.parseInt(oper2.getText().toString()) - Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "x"){
+	    		res = Integer.parseInt(oper2.getText().toString()) * Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "/"){
+	    		res = Integer.parseInt(oper2.getText().toString()) / Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	TextView resultado = (TextView)findViewById(R.id.etRes);
+	    	resultado.setText(Integer.toString(res));
+	    	this.operacion = op;
+	    	TextView nuevoOper = (TextView)findViewById(R.id.etOp);
+	    	nuevoOper.setText("");
+    	}
+    	
+    }
+    
+    public void igualFinal(){
+    	EditText oper = (EditText)findViewById(R.id.etOp);
+    	if (oper.getText().toString().equals("")){
+    		Toast.makeText(this, "Debes ingresar un numero para realizar la operación", Toast.LENGTH_LONG).show();
+    	}
+    	else{
+	    	EditText oper2 = (EditText)findViewById(R.id.etRes);
+	    	int res = 0;
+	    	if (this.operacion == "+"){
+	    		res = Integer.parseInt(oper2.getText().toString()) + Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "-"){
+	    		res = Integer.parseInt(oper2.getText().toString()) - Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "x"){
+	    		res = Integer.parseInt(oper2.getText().toString()) * Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else if (this.operacion == "/"){
+	    		res = Integer.parseInt(oper2.getText().toString()) / Integer.parseInt(oper.getText().toString()) ;
+	    	}
+	    	else{
+	    		res = Integer.parseInt(oper.getText().toString());
+	    	}
+	    	TextView resultado = (TextView)findViewById(R.id.etRes);
+	    	resultado.setText(Integer.toString(res));
+	    	this.operacion = "";
+	    	TextView nuevoOper = (TextView)findViewById(R.id.etOp);
+	    	nuevoOper.setText("");
+    	}
+    }
+    
+    public void borrarTodo(){
     	TextView nuevoOper = (TextView)findViewById(R.id.etOp);
+    	TextView resultado = (TextView)findViewById(R.id.etRes);
+    	this.operacion="";
     	nuevoOper.setText("");
+    	resultado.setText("");
     }
  
     @Override
